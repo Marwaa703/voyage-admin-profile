@@ -3,9 +3,10 @@ import React from "react";
 import Tabs from "@/components/Tabs";
 import DashboardContent from "@/components/DashboardContent";
 import { useSelector } from "react-redux";
+import { RootState } from "@reduxjs/toolkit/query/react";
 
 const Home: React.FC = () => {
-  const user = useSelector((state) => state.admin.user);
+  const user = useSelector((state: RootState) => state.admin.user);
 
   return (
     <div className="h-screen w-full flex items-center justify-center overflow-hidden login-bg">
