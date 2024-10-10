@@ -1,19 +1,45 @@
-import React from 'react';
+
+"use client"; 
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { login } from '@/api/auth';
 
 const LoginForm: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    try {
+      await login(email, password);
+      router.push('/home');
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
   return (
     <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-lg shadow-lg p-8 w-full max-w-md">
       <h2 className="text-3xl font-semibold text-white text-center mb-6">Login to Voyage</h2>
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        {error && <p className="text-red-500 text-center">{error}</p>}
         <input
           type="email"
           placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full px-4 py-2 bg-white bg-opacity-20 text-white placeholder-white border-none rounded-md focus:outline-none focus:ring-2 focus:ring-white"
           required
         />
         <input
           type="password"
           placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="w-full px-4 py-2 bg-white bg-opacity-20 text-white placeholder-white border-none rounded-md focus:outline-none focus:ring-2 focus:ring-white"
           required
         />
