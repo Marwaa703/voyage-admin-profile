@@ -11,7 +11,7 @@ export const login = async (
       email,
       password,
     });
-    console.log(response.data);
+    console.log(response.data.user);
     return response.data;
   } catch (error: any) {
     if (error.response) {

@@ -1,20 +1,27 @@
-"use client"; 
-import React from 'react';
+"use client";
+import React from "react";
+import Tabs from "@/components/Tabs";
+import DashboardContent from "@/components/DashboardContent";
+import { useSelector } from "react-redux";
 
 const Home: React.FC = () => {
+  const user = useSelector((state) => state.admin.user);
+
   return (
-    <div className="flex h-full w-full items-center justify-center login-bg">
-      <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-lg shadow-lg p-8 w-full max-w-md text-center">
-        <h1 className="text-4xl font-semibold text-white mb-4">Welcome to Voyage</h1>
-        <p className="text-white mb-4">
-          You have successfully logged in! Enjoy your stay.
-        </p>
-        <button
-          onClick={() => alert('This button could navigate somewhere!')}
-          className="mt-4 py-2 px-4 bg-white bg-opacity-30 text-white rounded-md hover:bg-opacity-50 transition duration-300"
-        >
-          Explore More
-        </button>
+    <div className="h-screen w-full flex items-center justify-center overflow-hidden login-bg">
+      <div className="flex w-[90%] h-[90%] bg-white bg-opacity-10 backdrop-blur-lg rounded-lg shadow-lg m-5">
+        {/* Sidebar for Tabs */}
+        <div className="w-1/4 p-4">
+          <h1 className="text-3xl font-semibold text-white mb-4 text-center">
+            Welcome, {user ? user.first_name : "Admin"}
+          </h1>
+          <Tabs />
+        </div>
+
+        {/* Main Content for Displaying Charts and Actions */}
+        <div className="w-3/4 p-6">
+          <DashboardContent />
+        </div>
       </div>
     </div>
   );
