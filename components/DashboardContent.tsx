@@ -1,13 +1,20 @@
-"use client";
+// components/DashboardContent.tsx
 import React from "react";
 import GeneralDashboard from "./tabs/GeneralDashboard";
 import UsersList from "./tabs/UsersList";
 import CompaniesList from "./tabs/CompaniesList";
+import Trips from "./tabs/Trips";
+import Settings from "./tabs/Settings";
 
 interface DashboardContentProps {
   activeTab: string;
+  setBackgroundImage: (image: string) => void;
 }
-const DashboardContent: React.FC<DashboardContentProps> = ({ activeTab }) => {
+
+const DashboardContent: React.FC<DashboardContentProps> = ({
+  activeTab,
+  setBackgroundImage,
+}) => {
   const renderContent = () => {
     switch (activeTab) {
       case "General":
@@ -15,11 +22,11 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ activeTab }) => {
       case "Users":
         return <UsersList />;
       case "Trips":
-        return <p className="text-white">This is the Trips content.</p>;
+        return <Trips />;
       case "Companies":
         return <CompaniesList />;
       case "Settings":
-        return <p className="text-white">This is the Settings content.</p>;
+        return <Settings setBackgroundImage={setBackgroundImage} />;
       default:
         return <p className="text-white">No content available.</p>;
     }

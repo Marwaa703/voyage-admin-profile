@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Tabs from "@/components/Tabs";
 import DashboardContent from "@/components/DashboardContent";
+import Settings from "@/components/tabs/Settings"; 
 import {
   GlobeAltIcon,
   UserGroupIcon,
@@ -12,8 +13,21 @@ import {
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("General");
 
+  const [backgroundImage, setBackgroundImage] = useState<string>(
+    "https://images.pexels.com/photos/5440838/pexels-photo-5440838.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  );
+
   return (
-    <div className="h-screen w-full flex items-center justify-center overflow-hidden login-bg">
+    <div
+      className="h-screen w-full flex items-center justify-center overflow-hidden login-bg"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <div className="flex flex-col lg:flex-row w-[95%] h-[90%] bg-white bg-opacity-20 backdrop-blur-lg rounded-lg shadow-2xl p-5 m-5 border border-white/20">
         <div className="w-full lg:w-1/4 p-4 border-b lg:border-b-0 lg:border-r border-white/20">
           <h1 className="text-3xl font-semibold text-white mb-6 text-center">
@@ -74,7 +88,13 @@ const Home: React.FC = () => {
         </div>
 
         <div className="w-full lg:w-3/4 p-6 overflow-y-auto">
-          <DashboardContent activeTab={activeTab} />
+          {activeTab === "Settings" ? (
+            <Settings setBackgroundImage={setBackgroundImage} />
+          ) : (
+            <DashboardContent activeTab={activeTab} setBackgroundImage={function (image: string): void {
+                throw new Error("Function not implemented.");
+              } } />
+          )}
         </div>
       </div>
     </div>

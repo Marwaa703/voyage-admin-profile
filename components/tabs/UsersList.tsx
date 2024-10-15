@@ -76,7 +76,9 @@ const UsersList: React.FC = () => {
   };
 
   return (
-    <div >
+    <div className="bg-gray-800 p-4 rounded">
+      {" "}
+      {/* Dark background */}
       {editUser && (
         <div className="mb-4">
           <input
@@ -140,24 +142,24 @@ const UsersList: React.FC = () => {
         {users.map((user) => (
           <li
             key={user.id}
-            className="flex items-center justify-between mb-2 p-2 border-b"
+            className="flex items-center justify-between mb-2 p-2 border-b border-gray-700"
           >
             <div>
               <p className="font-medium text-white">
                 {user.firstName} {user.lastName}
               </p>
-              <p className="text-sm text-gray-600">{user.email}</p>
-              <p className="text-sm text-gray-600">{user.phone}</p>
-              <p className="text-sm text-gray-600">{user.gender}</p>
-              <p className="text-sm text-gray-600">{user.birthDate}</p>
+              <p className="text-sm text-gray-400">{user.email}</p>
+              <p className="text-sm text-gray-400">{user.phone}</p>
+              <p className="text-sm text-gray-400">{user.gender}</p>
+              <p className="text-sm text-gray-400">{user.birthDate}</p>
             </div>
             <div className="flex space-x-2">
-              <button className="text-blue-500" onClick={() => startEdit(user)}>
+              <button className="text-blue-400" onClick={() => startEdit(user)}>
                 <PencilIcon className="w-5 h-5" />
                 Edit
               </button>
               <button
-                className="text-red-500"
+                className="text-red-400"
                 onClick={() => deleteUser(user.id)}
               >
                 <TrashIcon className="w-5 h-5" />
