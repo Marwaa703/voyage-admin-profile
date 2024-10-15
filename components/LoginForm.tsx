@@ -3,19 +3,18 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { loginUser } from "@/redux/slices/admin";
+import { login } from "@/api/auth";
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      await loginUser({ email, password });
+      await login(email, password);
       router.push("/home");
     } catch (err: any) {
       console.error(err);
