@@ -9,13 +9,13 @@ const LoginForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const dispatch = useDispatch();
+  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      await dispatch(loginUser({ email, password }));
+      await loginUser({ email, password });
       router.push("/home");
     } catch (err: any) {
       console.error(err);
