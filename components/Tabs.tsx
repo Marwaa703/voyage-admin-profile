@@ -7,7 +7,7 @@ interface TabsProps {
 }
 
 const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
-  const tabs = ["General", "Trips", "Companies", "Settings"];
+  const tabs = ["General","Users", "Trips", "Companies", "Settings"];
 
   return (
     <div className="flex flex-col space-y-4">
