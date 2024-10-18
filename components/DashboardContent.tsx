@@ -2,7 +2,7 @@
 import React from "react";
 import GeneralDashboard from "./tabs/GeneralDashboard";
 import UsersList from "./tabs/UsersList";
-import CompaniesList from "./tabs/CompaniesList";
+import Management from "./tabs/Management";
 import Trips from "./tabs/Trips";
 import Settings from "./tabs/Settings";
 
@@ -24,7 +24,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
       case "Trips":
         return <Trips />;
       case "Companies":
-        return <CompaniesList />;
+        return <Management />;
       case "Settings":
         return <Settings setBackgroundImage={setBackgroundImage} />;
       default:

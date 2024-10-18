@@ -1,71 +1,82 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { getUsers } from "../../api/get";
+import {
+  updateUser as apiUpdateUser,
+  deleteUser as apiDeleteUser,
+} from "../../api/put";
 
 interface User {
   id: number;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   gender: string;
   phone: string;
-  birthDate: string;
+  birth_date: string;
+  role: string;
 }
 
-const initialUsers: User[] = [
-  {
-    id: 1,
-    firstName: "User",
-    lastName: "One",
-    email: "one@vu.com",
-    password: "password123",
-    gender: "Male",
-    phone: "123-456-7890",
-    birthDate: "1990-01-01",
-  },
-  {
-    id: 2,
-    firstName: "User",
-    lastName: "Two",
-    email: "two@vu.com",
-    password: "password456",
-    gender: "Female",
-    phone: "098-765-4321",
-    birthDate: "1995-05-05",
-  },
-];
-
 const UsersList: React.FC = () => {
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [users, setUsers] = useState<User[]>([]);
   const [editUser, setEditUser] = useState<User | null>(null);
   const [updatedUserData, setUpdatedUserData] = useState<Partial<User>>({});
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const fetchedUsers = await getUsers();
+        const filteredUsers = fetchedUsers.filter(
+          (user) => user.role === "User"
+        );
+        setUsers(filteredUsers);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const startEdit = (user: User) => {
     setEditUser(user);
     setUpdatedUserData({
-      firstName: user.firstName,
-      lastName: user.lastName,
+      first_name: user.first_name,
+      last_name: user.last_name,
       email: user.email,
       phone: user.phone,
       gender: user.gender,
-      birthDate: user.birthDate,
+      birth_date: user.birth_date,
     });
   };
 
-  const updateUser = () => {
+  const updateUser = async () => {
     if (editUser) {
-      const updatedUsers = users.map((user) =>
-        user.id === editUser.id ? { ...user, ...updatedUserData } : user
-      );
-      setUsers(updatedUsers);
-      setEditUser(null);
-      setUpdatedUserData({});
+      try {
+        const updatedUser = await apiUpdateUser(
+          editUser.id.toString(),
+          updatedUserData
+        );
+        const updatedUsers = users.map((user) =>
+          user.id === editUser.id ? { ...user, ...updatedUser } : user
+        );
+        setUsers(updatedUsers);
+        setEditUser(null);
+        setUpdatedUserData({});
+      } catch (error) {
+        console.error("Failed to update user:", error);
+      }
     }
   };
 
-  const deleteUser = (id: number) => {
-    setUsers(users.filter((user) => user.id !== id));
+  const deleteUser = async (id: number) => {
+    try {
+      await apiDeleteUser(id.toString());
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+    }
   };
 
   const handleInputChange = (
@@ -75,24 +86,32 @@ const UsersList: React.FC = () => {
     setUpdatedUserData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    };
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="bg-gray-800 p-4 rounded">
-      {" "}
-      {/* Dark background */}
       {editUser && (
         <div className="mb-4">
           <input
             type="text"
-            name="firstName"
-            value={updatedUserData.firstName || ""}
+            name="first_name"
+            value={updatedUserData.first_name || ""}
             onChange={handleInputChange}
             placeholder="First Name"
             className="border border-gray-300 rounded-md p-2 mr-2"
           />
           <input
             type="text"
-            name="lastName"
-            value={updatedUserData.lastName || ""}
+            name="last_name"
+            value={updatedUserData.last_name || ""}
             onChange={handleInputChange}
             placeholder="Last Name"
             className="border border-gray-300 rounded-md p-2 mr-2"
@@ -125,8 +144,8 @@ const UsersList: React.FC = () => {
           </select>
           <input
             type="date"
-            name="birthDate"
-            value={updatedUserData.birthDate || ""}
+            name="birth_date"
+            value={updatedUserData.birth_date || ""}
             onChange={handleInputChange}
             className="border border-gray-300 rounded-md p-2 mr-2"
           />
@@ -146,12 +165,14 @@ const UsersList: React.FC = () => {
           >
             <div>
               <p className="font-medium text-white">
-                {user.firstName} {user.lastName}
+                {user.first_name} {user.last_name}
               </p>
               <p className="text-sm text-gray-400">{user.email}</p>
               <p className="text-sm text-gray-400">{user.phone}</p>
               <p className="text-sm text-gray-400">{user.gender}</p>
-              <p className="text-sm text-gray-400">{user.birthDate}</p>
+              <p className="text-sm text-gray-400">
+                {formatDate(user.birth_date)}
+              </p>
             </div>
             <div className="flex space-x-2">
               <button className="text-blue-400" onClick={() => startEdit(user)}>
