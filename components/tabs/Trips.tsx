@@ -8,22 +8,22 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { getCompanies, getTripsByCompanyId } from "../../api/get"; // Adjust the import according to your file structure
+import { getCompanies, getTripsByCompanyId } from "../../api/get"; 
 
 interface Trip {
   id: number;
-  status: "active" | "paused" | "completed"; // Ensure status is lowercase
+  status: "active" | "paused" | "completed";
 }
 
 interface Company {
-  id: number; // Assuming you have an ID for each company
+  id: number; 
   name: string;
   trips: Trip[];
-  status: string; // Include status field in the Company interface
+  status: string; 
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  active: "#0088FE", // Use lowercase status
+  active: "#0088FE", 
   paused: "#FFBB28",
   completed: "#FF8042",
 };
@@ -51,11 +51,10 @@ const Trips: React.FC = () => {
       try {
         const companiesData = await getCompanies();
 
-        // Filter companies where status is 'approved'
         const approvedCompanies = companiesData.filter(
           (company: Company) => company.status === "approved"
         );
-        console.log("Approved Companies Data:", approvedCompanies); // Log approved companies data
+        console.log("Approved Companies Data:", approvedCompanies);
 
         const companiesWithTrips = await Promise.all(
           approvedCompanies.map(async (company: Company) => {
@@ -68,7 +67,7 @@ const Trips: React.FC = () => {
                 `Error fetching trips for Company ID ${company.id}:`,
                 error
               );
-              return { ...company, trips: [] }; // If there's an error, return the company with an empty trips array
+              return { ...company, trips: [] };
             }
           })
         );
@@ -88,7 +87,6 @@ const Trips: React.FC = () => {
     return <div className="text-white">Loading...</div>;
   }
 
-  // Flatten trips for overall status count
   const flatTrips = companies.flatMap((company) => company.trips);
   const { active, paused, completed } = getTripCounts(flatTrips);
   const pieData = [
@@ -139,7 +137,7 @@ const Trips: React.FC = () => {
                   {company.name}
                 </h4>
                 {company.trips.length === 0 ? (
-                  <p className="text-gray-400">No trips yet.</p> // Display message if no trips
+                  <p className="text-gray-400">No trips yet.</p>
                 ) : (
                   <ul className="list-disc pl-5">
                     {company.trips.map((trip) => (

@@ -84,7 +84,6 @@ const CompaniesManagement: React.FC = () => {
         status: "approved",
       });
 
-      // Update local state to reflect the change
       const updatedCompanies = companies.map((company) => {
         if (company.id === companyId) {
           return { ...company, status: "approved" };
