@@ -47,23 +47,23 @@ const GeneralDashboard: React.FC = () => {
         const tripsData = await getTrips();
 
         const usersWithRoleUser = usersData.filter(
-          (user) => user.role === "User"
+          (user: any) => user.role === "User"
         );
         setFilteredUsers(usersWithRoleUser);
         setUsersCount(usersWithRoleUser.length);
 
         const approvedCompaniesList = companiesData.filter(
-          (company) => company.status === "approved"
+          (company: any) => company.status === "approved"
         );
         setCompaniesCount(approvedCompaniesList.length);
 
         const activeTripsList = tripsData.filter(
-          (trip) => trip.status === "active"
+          (trip: any) => trip.status === "active"
         );
         setTripsCount(activeTripsList.length);
 
         const pendingCompaniesList = companiesData.filter(
-          (company) => company.status === "pending"
+          (company: any) => company.status === "pending"
         );
         setPendingRequests(pendingCompaniesList);
       } catch (error) {
